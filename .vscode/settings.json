@@ -1,13 +1,8 @@
 {
   "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "prettier.disableLanguages": ["javascript"],
-  // "[javascript]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "[json]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // }
+  "prettier.disableLanguages": ["javascript"]
 }
