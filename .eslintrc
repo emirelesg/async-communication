@@ -1,0 +1,25 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "eslint.workingDirectories": ["./"],
+  "extends": ["airbnb-base", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error", {
+        "singleQuote": true,
+        "printWidth": 80,
+        "tabWidth": 2,
+        "trailingComma": "none"
+      }
+    ],
+    "no-console": "off",
+    "quotes": [2, "single", {
+      "avoidEscape": true,
+      "allowTemplateLiterals": true
+    }]
+  },
+  "plugins": ["prettier"]
+}
+  
