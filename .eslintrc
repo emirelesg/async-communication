@@ -5,6 +5,8 @@
   },
   "extends": ["airbnb-base", "prettier"],
   "rules": {
+    // Enforce the use of extensions for all imports.
+    "import/extensions": ["error", "always"],
     "prettier/prettier": [
       "error",
       {
