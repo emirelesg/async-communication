@@ -4,5 +4,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "prettier.disableLanguages": ["javascript"]
+  "prettier.disableLanguages": [
+    "javascript"
+  ],
+  "eslint.enable": true
 }

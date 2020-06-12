@@ -5,12 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules index.js"
+    "start": "node --experimental-modules index.js",
+    "dev": "nodemon start"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
