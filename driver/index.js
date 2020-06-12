@@ -3,32 +3,14 @@
 import IO from 'socket.io';
 import MettlerToledoScale from './MettlerToledoScale.js';
 
+// https://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
 const socket = IO();
+// const socket = IO({ transports: ['WebSocket', 'polling'] });
 
 socket.on('connection', async (client) => {
   const scale = new MettlerToledoScale(client);
   try {
     await scale.tare();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
-    await scale.getStableWeightValue();
     await scale.getStableWeightValue();
   } catch (err) {
     console.log('woops', err);

@@ -1,7 +1,7 @@
 /**
  * Wrapper for a raw socket-io client that promisifies all socket-io messages.
  */
-import events from 'events';
+import { EventEmitter } from 'events';
 
 /**
  * Assumptions
@@ -10,67 +10,53 @@ import events from 'events';
 
 export default class ClientHandler {
   constructor(client) {
-    this.RESPONSE_TIMEOUT = 400;
+    this.RESPONSE_TIMEOUT = 1000;
     this.socket = client;
     this.id = client.id;
+    this.evt = new EventEmitter();
     this.socket.on('response', this.onResponse.bind(this));
     this.socket.on('disconnect', this.onDisconnect.bind(this));
-    this.queue = [];
-    console.log(`${this.id} connected`);
+    console.log(`${this.id} Connected`);
   }
 
   onResponse(res) {
-    console.log(`${this.id} response: ${JSON.stringify(res)}`);
-    // Remove the first element of the queue and resolve the promise with the
-    // received response.
-    if (this.queue.length > 0) {
-      const emitter = this.queue.shift();
-      console.log(emitter);
-      emitter.emit('resolve', res);
+    // Only process response if there are promises listening for a response.
+    if (this.evt.listenerCount('resolve') > 0) {
+      console.log(`${this.id} Response: ${JSON.stringify(res)}`);
+      this.evt.emit('resolve', res);
     }
   }
 
   onDisconnect() {
-    console.log(`${this.id} disconnected`);
-    // Reject all promises waiting for a response. Nothing will be received since
-    // client has disconnected.
-    this.queue.forEach((emitter) => emitter.emit('reject', 'NO_CONNECTION'));
-    this.queue = [];
+    console.log(`${this.id} Disconnected`);
+    this.evt.emit('reject', 'NO_CONNECTION');
   }
 
   sendCommand(command) {
     if (this.socket.connected) {
-      // Create a promise that can be resolved when a message is received.
-      // The promise listens for resolve and reject events triggered by the
-      // onResponse or onDisconnect methods.
-      let evt = new events.EventEmitter();
+      // Create a promise that is resolved when a response to the command is received
+      // within the timeout configured. Otherwise the promise is rejected.
+      // The promise can also be rejected if the client disconnects.
+      const { evt } = this;
       const responsePromise = new Promise((resolve, reject) => {
-        // The promise has a timeout of RESPONSE_TIMEOUT.
-        const id = setTimeout(() => {
-          // Must remove queued element!!!!!!!!
-
-          evt.removeAllListeners();
-          evt = null;
-
-          reject(new Error('TIMEOUT'));
-        }, this.RESPONSE_TIMEOUT);
+        const id = setTimeout(
+          () => evt.emit('reject', 'TIMEOUT'),
+          this.RESPONSE_TIMEOUT
+        );
         evt.once('resolve', (msg) => {
           evt.removeAllListeners();
-          // evt = null;
           clearTimeout(id);
           resolve(msg);
         });
         evt.once('reject', (err) => {
           evt.removeAllListeners();
-          // evt = null;
           clearTimeout(id);
           reject(err);
         });
       });
-      // The function to reject or resolve the promise via an event is pushed.
-      this.queue.push(evt);
 
-      // Command is sent at the end just to be sure listeners are up.
+      // Command is sent at the end just to be sure listeners inside the promise
+      // are up.
       console.log(`${this.id} Sending: ${command}`);
       this.socket.emit('command', command);
       return responsePromise;
