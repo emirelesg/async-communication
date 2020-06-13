@@ -5,13 +5,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules index.js",
-    "dev": "nodemon start"
+    "start": "node --experimental-modules ./src/index.js",
+    "dev": "nodemon --no-stdin start"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "blessed": "^0.1.81",
+    "moment": "^2.26.0",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
