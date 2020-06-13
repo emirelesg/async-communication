@@ -28,7 +28,7 @@ socket.on('command', async (raw) => {
   const response = scale.processCommand(raw);
   if (response && response !== '') {
     setTimeout(
-      () => socket.emit('response', `${response}\r\n`),
+      () => socket.emit('response', response),
       Math.trunc(500 * Math.random())
     );
   }

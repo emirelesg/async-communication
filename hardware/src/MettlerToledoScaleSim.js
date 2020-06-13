@@ -52,8 +52,11 @@ export default class MettlerToledoScaleSim {
         const [id, ...params] = split;
         if (this.commandLookup[id]) {
           const response = this[this.commandLookup[id]](params);
-          cli.out(`${response}`);
-          return response;
+          if (response) {
+            const formatted = `${response}\r\n`;
+            cli.out(`${JSON.stringify(formatted)}`);
+            return formatted;
+          }
         }
       }
     }
