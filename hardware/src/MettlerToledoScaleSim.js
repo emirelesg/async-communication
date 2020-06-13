@@ -40,7 +40,7 @@ export default class MettlerToledoScaleSim {
 
   /**
    * Processes the command and matches the command to a function using the lookup object
-   * commandLookup. A response of the matching function is returned.
+   * commandLookup.
    * @param {string} raw The raw command received.
    * @returns {string|null} The response of the command. Null if the command has no match.
    */
@@ -49,9 +49,9 @@ export default class MettlerToledoScaleSim {
       cli.in(`${JSON.stringify(raw)}`);
       const split = raw.trim().split('_');
       if (split.length > 0) {
-        const [command, ...params] = split;
-        if (this.commandLookup[command]) {
-          const response = this[this.commandLookup[command]](params);
+        const [id, ...params] = split;
+        if (this.commandLookup[id]) {
+          const response = this[this.commandLookup[id]](params);
           cli.out(`${response}`);
           return response;
         }

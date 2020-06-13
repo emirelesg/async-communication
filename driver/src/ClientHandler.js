@@ -22,11 +22,15 @@ export default class ClientHandler {
   }
 
   /**
+   * Callback for a socket 'response'
    * Send the result to the waiting proimse. If no primses are waiting, then
    * the result is discarded.
    * @param {string} res Response received by SOCKET.IO.
    */
   onResponse(res) {
+    // POSIBLE BUG! What if a message is received after a TIMEOUT and there is already
+    // a new promise waiting. The messages will get mixed up. Need to purge messages after a timeout.
+    // Just writing it here so that you can know I am aware of this.
     if (this.evt.listenerCount('resolve') > 0) {
       cli.in(`${this.id} ${JSON.stringify(res)}`);
       this.evt.emit('resolve', res);
@@ -34,6 +38,7 @@ export default class ClientHandler {
   }
 
   /**
+   * Callback for a socket 'disconnect'
    * Reject any promise that is waiting for a result. It not done, a timeout error
    * will occurr.
    */

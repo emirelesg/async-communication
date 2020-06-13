@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --experimental-modules ./src/index.js",
-    "dev": "nodemon start"
+    "dev": "nodemon --no-stdin start"
   },
   "keywords": [],
   "author": "",

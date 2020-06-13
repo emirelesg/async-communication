@@ -22,11 +22,7 @@ class CLI {
         type: 'line'
       },
       width: '100%',
-      height: 3,
-      style: {
-        fg: 'blue',
-        bg: 'black'
-      }
+      height: 3
     });
     this.body = blessed.box({
       top: 3,
