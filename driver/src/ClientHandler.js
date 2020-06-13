@@ -23,8 +23,8 @@ export default class ClientHandler {
 
   /**
    * Callback for a socket 'response'
-   * Send the result to the waiting proimse. If no primses are waiting, then
-   * the result is discarded.
+   * Send the response to the waiting proimse. If no primses are waiting, then
+   * the response is discarded.
    * @param {string} res Response received by SOCKET.IO.
    */
   onResponse(res) {
@@ -39,7 +39,7 @@ export default class ClientHandler {
 
   /**
    * Callback for a socket 'disconnect'
-   * Reject any promise that is waiting for a result. It not done, a timeout error
+   * Reject any promise that is waiting for a result. If not done, a timeout error
    * will occurr.
    */
   onDisconnect() {
